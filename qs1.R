@@ -10,9 +10,8 @@ library(mboost)
 err_rate1<-c()
 for(i in seq(10,100,10)){
   bb<-blackboost(Spam~.,data=train,control = boost_control(mstop = i),family = Binomial())
-  pred<-predict(bb,test)
-  pred <- ifelse(pred>0, 1, 0)
-  cft<-table(Pred=pred,Actual=test$Spam)
+  pred<-predict.mboost(bb,train,type="class")
+  cft<-table(Pred=pred,Actual=train$Spam)
   tp <- cft[2, 2]
   tn <- cft[1, 1]
   fp <- cft[2, 1]
@@ -25,8 +24,7 @@ for(i in seq(10,100,10)){
 err_rate2<-c()
 for(i in seq(10,100,10)){
   bb<-blackboost(Spam~.,data=train,control = boost_control(mstop = i),family = AdaExp())
-  pred<-predict(bb,test)
-  pred <- ifelse(pred>0, 1, 0)
+  pred<-predict.mboost(bb,test,type="class")
   cft<-table(Pred=pred,Actual=test$Spam)
   tp <- cft[2, 2]
   tn <- cft[1, 1]
@@ -41,17 +39,18 @@ ggplot()+geom_line(data = df, aes(x = step, y = err1), color = "blue") +
   geom_line(data = df, aes(x = step, y = err2), color = "red") 
 
 library(randomForest)
-rf<-randomForest(Spam~.,data=train,ntree=10)
-rf$err.rate
-pred<-predict(rf,test)
-cft<-table(Pred=pred,Actual=test$Spam)
-tp <- cft[2, 2]
-tn <- cft[1, 1]
-fp <- cft[2, 1]
-fn <- cft[1, 2]
-accuracy <- 1-(tp + tn)/(tp + tn + fp + fn)
-accuracy
 
+for(i in seq(10,100,10)){
+  rf<-randomForest(Spam~.,data=train,ntree=i)
+  pred<-predict(rf,test)
+  cft<-table(Pred=pred,Actual=test$Spam)
+  tp <- cft[2, 2]
+  tn <- cft[1, 1]
+  fp <- cft[2, 1]
+  fn <- cft[1, 2]
+  accuracy <- 1-(tp + tn)/(tp + tn + fp + fn)
+  err_rate1<-c(err_rate1,accuracy)
+}
 
 
 
