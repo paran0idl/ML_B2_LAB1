@@ -20,10 +20,12 @@ for(n in 1:N) {
     x[n,d] <- rbinom(1,1,true_mu[k,d])
   }
 }
+x
 K=3 # number of guessed components
 z <- matrix(nrow=N, ncol=K) # fractional component assignments
 pi <- vector(length = K) # mixing coefficients
 mu <- matrix(nrow=K, ncol=D) # conditional distributions
+mu
 llik <- vector(length = max_it) # log likelihood of the EM iterations
 # Random initialization of the paramters
 pi <- runif(K,0.49,0.51)
@@ -31,7 +33,8 @@ pi <- pi / sum(pi)
 for(k in 1:K) {
   mu[k,] <- runif(D,0.49,0.51)
 }
-pi mu
+pi 
+mu
 for(it in 1:max_it) {
   plot(mu[1,], type="o", col="blue", ylim=c(0,1))
   points(mu[2,], type="o", col="red")
@@ -52,4 +55,3 @@ for(it in 1:max_it) {
 pi
 mu
 plot(llik[1:it], type="o")
-
