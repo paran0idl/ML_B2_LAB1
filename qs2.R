@@ -25,7 +25,6 @@ K=3 # number of guessed components
 z <- matrix(nrow=N, ncol=K) # fractional component assignments
 pi <- vector(length = K) # mixing coefficients
 mu <- matrix(nrow=K, ncol=D) # conditional distributions
-mu
 llik <- vector(length = max_it) # log likelihood of the EM iterations
 # Random initialization of the paramters
 pi <- runif(K,0.49,0.51)
@@ -33,8 +32,7 @@ pi <- pi / sum(pi)
 for(k in 1:K) {
   mu[k,] <- runif(D,0.49,0.51)
 }
-pi 
-mu
+
 for(it in 1:max_it) {
   plot(mu[1,], type="o", col="blue", ylim=c(0,1))
   points(mu[2,], type="o", col="red")
@@ -43,15 +41,52 @@ for(it in 1:max_it) {
   Sys.sleep(0.5)
   # E-step: Computation of the fractional component assignments
   # Your code here
+  for(n in 1:N){
+    denominator<-c()
+    numerator<-c()
+    for(k in 1:K){
+      new_numerator<-pi[k]*prod(mu[k,]^x[n,]*(1-mu[k,])^(1-x[n,]))
+      numerator<-c(numerator,new_numerator)
+      denominator<-sum(numerator)
+    }
+    z[n,]<-numerator/denominator
+  }
   #Log likelihood computation.
+  sum=0
+  for(n in 1:N){
+    for(k in 1:K){
+      sum=sum+z[n,k]*(log(pi[k])+sum(x[n,]*log(mu[k,])+(1-x[n,])*log(1-mu[k,])))
+    }
+  }
+  llik[it]<-sum
+  print(sum)
   # Your code here
   cat("iteration: ", it, "log likelihood: ", llik[it], "\n")
   flush.console()
   # Stop if the lok likelihood has not changed significantly
+  if(it>1){
+    if(abs(llik[it]-llik[it-1])<min_change)
+      break
+  }
   # Your code here
   #M-step: ML parameter estimation from the data and fractional component assignments
   # Your code here
+  pi=apply(z,2,mean)
+  for(k in 1:K){
+    mu[k,]=0
+    for (n in 1:N) {
+      mu[k,] = mu[k,] + x[n,] * z[n,k]
+    }
+    mu[k,] = mu[k,] / sum(z[,k])
+  }
 }
 pi
 mu
 plot(llik[1:it], type="o")
+
+
+
+
+
+
+

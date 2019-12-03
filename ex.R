@@ -43,7 +43,6 @@ em <- function (x,
     ## p(k|x_i) for each K many possibilities of k, and each observation
     ## using the Bayes theorem
     k.cond.xi <- diag(1 / obs.x) %*% obs.kx
-    
     ## Log likelihood computation.
     llik[it] <- sum(log(obs.x))
     
