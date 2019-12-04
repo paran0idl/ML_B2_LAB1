@@ -16,8 +16,9 @@ for(i in seq(10,100,10)){
   tn <- cft[1, 1]
   fp <- cft[2, 1]
   fn <- cft[1, 2]
-  accuracy <- 1-(tp + tn)/(tp + tn + fp + fn)
-  err_rate1<-c(err_rate1,accuracy)
+  misclassfication <- (1-(tp + tn)/(tp + tn + fp + fn))*100
+  print(misclassfication)
+  err_rate1<-c(err_rate1,misclassfication)
 }
 
 
@@ -30,8 +31,8 @@ for(i in seq(10,100,10)){
   tn <- cft[1, 1]
   fp <- cft[2, 1]
   fn <- cft[1, 2]
-  accuracy <- 1-(tp + tn)/(tp + tn + fp + fn)
-  err_rate2<-c(err_rate2,accuracy)
+  misclassfication <- (1-(tp + tn)/(tp + tn + fp + fn))*100
+  err_rate2<-c(err_rate2,misclassfication)
 }
 # library(ggplot2)
 # df<-data.frame(step=seq(10,100,10),err1=err_rate1,err2=err_rate2)
@@ -49,8 +50,8 @@ for(i in seq(10,100,10)){
   tn <- cft[1, 1]
   fp <- cft[2, 1]
   fn <- cft[1, 2]
-  accuracy <- 1-(tp + tn)/(tp + tn + fp + fn)
-  err_rate3<-c(err_rate3,accuracy)
+  misclassfication <- (1-(tp + tn)/(tp + tn + fp + fn))*100
+  err_rate3<-c(err_rate3,misclassfication)
 }
 
 err_rate4<-c()
@@ -62,8 +63,8 @@ for(i in seq(10,100,10)){
   tn <- cft[1, 1]
   fp <- cft[2, 1]
   fn <- cft[1, 2]
-  accuracy <- 1-(tp + tn)/(tp + tn + fp + fn)
-  err_rate4<-c(err_rate4,accuracy)
+  misclassfication <- (1-(tp + tn)/(tp + tn + fp + fn))*100
+  err_rate4<-c(err_rate4,misclassfication)
 }
 
 library(ggplot2)
